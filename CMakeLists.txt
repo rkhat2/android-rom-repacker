@@ -42,21 +42,22 @@ m_ExternalProject_Add(LIBZ
 
 # PCRE
 m_ExternalProject_Add(PCRE
-    CONFIGURE_COMMAND ${CMAKE_COMMAND} ${PCRE_SOURCE_DIR}/dist
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} ${PCRE_SOURCE_DIR}/dist2
     BUILD_COMMAND ""
     STEP_TARGETS configure
 )
 
-# LIBSELINUX
-m_ExternalProject_Add(LIBSELINUX
+# SELINUX
+m_ExternalProject_Add(SELINUX
     PATCH_COMMAND ${CMAKE_COMMAND} -E echo "Adding custom cmake configuration"
-    COMMAND ${CMAKE_COMMAND} -E copy ${EXTERNAL_MODULES_DIR}/libselinux.cmake ${LIBSELINUX_DIR}/CMakeLists.txt
+    COMMAND ${CMAKE_COMMAND} -E copy ${EXTERNAL_MODULES_DIR}/selinux.cmake ${SELINUX_DIR}/CMakeLists.txt
     CMAKE_CACHE_ARGS ${COMMON_CMAKE_ARGS}
     BUILD_COMMAND ""
-    SOURCE_SUBDIR ${RELATIVE_LIBSELINUX_SOURCE}
+    SOURCE_SUBDIR ${RELATIVE_SELINUX_SOURCE}
     STEP_TARGETS configure
 )
-ExternalProject_Add_StepDependencies(LIBSELINUX patch "${EXTERNAL_MODULES_DIR}/libselinux.cmake")
+ExternalProject_Add_StepDependencies(SELINUX patch "${EXTERNAL_MODULES_DIR}/selinux.cmake")
+ExternalProject_Add_StepDependencies(SELINUX configure PCRE-patch)
 
 # CORE
 m_ExternalProject_Add(CORE
@@ -80,7 +81,7 @@ m_ExternalProject_Add(EXTRAS
     STEP_TARGETS configure
 )
 ExternalProject_Add_StepDependencies(EXTRAS patch "${EXTERNAL_MODULES_DIR}/extras.cmake")
-ExternalProject_Add_StepDependencies(EXTRAS configure libz libpcre libselinux libsparse libcutils liblog)
+ExternalProject_Add_StepDependencies(EXTRAS configure libz libselinux libsparse libcutils liblog)
 
 unset(EXTERNAL_MODULES_DIR)
 
@@ -92,16 +93,20 @@ m_build_target(libz zlibstatic LIBZ)
 add_dependencies(libz LIBZ-configure)
 
 # Build libpcre
-m_build_target(libpcre pcre PCRE)
+m_build_target(libpcre pcre2-8 PCRE)
 add_dependencies(libpcre PCRE-configure)
 
 # Build libselinux
-m_build_target(libselinux libselinux LIBSELINUX)
-add_dependencies(libselinux LIBSELINUX-configure)
+m_build_target(libselinux libselinux SELINUX)
+add_dependencies(libselinux SELINUX-configure)
+
+# Build libbase
+m_build_target(libbase libbase CORE)
+add_dependencies(libbase CORE-configure)
 
 # Build libsparse
 m_build_target(libsparse libsparse CORE)
-add_dependencies(libsparse libz CORE-configure)
+add_dependencies(libsparse libz libbase CORE-configure)
 
 # Build libcutils
 m_build_target(libcutils libcutils CORE)
@@ -141,7 +146,7 @@ add_dependencies(unpackbootimg CORE-configure)
 
 # make_ext4fs
 m_build_target(make_ext4fs make_ext4fs EXTRAS)
-add_dependencies(make_ext4fs libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
+add_dependencies(make_ext4fs libz libselinux libsparse libcutils liblog EXTRAS-configure)
 
 # Miscellaneous
 # ============================================================

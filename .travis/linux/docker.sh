@@ -6,7 +6,7 @@ apt-get install -y wget
 #required
 apt-get install -y build-essential git zlib1g-dev libpcre3-dev
 #clang
-apt-get install -y clang
+apt-get install -y clang libc++-dev libc++abi-dev
 #gcc
 # apt-get install -y gcc-multilib g++-multilib
 

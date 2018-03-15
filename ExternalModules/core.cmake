@@ -1,6 +1,6 @@
-#Custom CMake configuration for Android 7 (Nougat) Core
+#Custom CMake configuration for Android 8 (Oreo) Core
 cmake_minimum_required(VERSION 3.8)
-project("Core" C)
+project("Core" C CXX)
 
 # External libraries
 # ============================================================
@@ -10,12 +10,17 @@ set(libz "${LIBZ_BINARY_DIR}/libz.a")
 # Compile options
 # ============================================================
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
+
+set(libbase_include ${CORE_SOURCE_DIR}/base/include)
 set(libsparse_include ${CORE_SOURCE_DIR}/libsparse/include)
+set(libcutils_include ${CORE_SOURCE_DIR}/libcutils/include)
+set(liblog_include ${CORE_SOURCE_DIR}/liblog/include)
 set(core_include ${CORE_SOURCE_DIR}/include)
 
 set(liblog_definitions
     -DFAKE_LOG_DEVICE=1
-    -DLIBLOG_LOG_TAG=1005
+    -DLIBLOG_LOG_TAG=1006
     -DSNET_EVENT_LOG_TAG=1397638484
 )
 
@@ -50,6 +55,17 @@ endfunction()
 # Sources
 # ============================================================
 
+# libbase sources
+set(LIBBASE_SRCS
+    ${CORE_SOURCE_DIR}/base/file.cpp
+    ${CORE_SOURCE_DIR}/base/logging.cpp
+    ${CORE_SOURCE_DIR}/base/parsenetaddress.cpp
+    ${CORE_SOURCE_DIR}/base/quick_exit.cpp
+    ${CORE_SOURCE_DIR}/base/stringprintf.cpp
+    ${CORE_SOURCE_DIR}/base/strings.cpp
+    ${CORE_SOURCE_DIR}/base/test_utils.cpp
+)
+
 # libsparse sources
 set(LIBSPARSE_SRCS
     ${CORE_SOURCE_DIR}/libsparse/backed_block.c
@@ -57,37 +73,42 @@ set(LIBSPARSE_SRCS
     ${CORE_SOURCE_DIR}/libsparse/sparse.c
     ${CORE_SOURCE_DIR}/libsparse/sparse_crc32.c
     ${CORE_SOURCE_DIR}/libsparse/sparse_err.c
-    ${CORE_SOURCE_DIR}/libsparse/sparse_read.c
+    ${CORE_SOURCE_DIR}/libsparse/sparse_read.cpp
 )
 
 # libcutil sources
 set(LIBCUTILS_SRCS
     ${CORE_SOURCE_DIR}/libcutils/config_utils.c
-    ${CORE_SOURCE_DIR}/libcutils/fs_config.c
+    ${CORE_SOURCE_DIR}/libcutils/fs_config.cpp
     ${CORE_SOURCE_DIR}/libcutils/canned_fs_config.c
     ${CORE_SOURCE_DIR}/libcutils/hashmap.c
     ${CORE_SOURCE_DIR}/libcutils/iosched_policy.c
     ${CORE_SOURCE_DIR}/libcutils/load_file.c
     ${CORE_SOURCE_DIR}/libcutils/native_handle.c
     ${CORE_SOURCE_DIR}/libcutils/open_memstream.c
-    ${CORE_SOURCE_DIR}/libcutils/process_name.c
     ${CORE_SOURCE_DIR}/libcutils/record_stream.c
-    ${CORE_SOURCE_DIR}/libcutils/sched_policy.c
+    ${CORE_SOURCE_DIR}/libcutils/sched_policy.cpp
     ${CORE_SOURCE_DIR}/libcutils/strlcpy.c
     ${CORE_SOURCE_DIR}/libcutils/threads.c
 )
 
 # liblog sources
 set(LIBLOG_SRCS
+    ${CORE_SOURCE_DIR}/liblog/config_read.c
+    ${CORE_SOURCE_DIR}/liblog/config_write.c
+    ${CORE_SOURCE_DIR}/liblog/local_logger.c
     ${CORE_SOURCE_DIR}/liblog/log_event_list.c
     ${CORE_SOURCE_DIR}/liblog/log_event_write.c
-    ${CORE_SOURCE_DIR}/liblog/logger_write.c
-    ${CORE_SOURCE_DIR}/liblog/config_write.c
-    ${CORE_SOURCE_DIR}/liblog/logger_name.c
+    ${CORE_SOURCE_DIR}/liblog/log_ratelimit.cpp
     ${CORE_SOURCE_DIR}/liblog/logger_lock.c
+    ${CORE_SOURCE_DIR}/liblog/logger_name.c
+    ${CORE_SOURCE_DIR}/liblog/logger_read.c
+    ${CORE_SOURCE_DIR}/liblog/logger_write.c
+    ${CORE_SOURCE_DIR}/liblog/logprint.c
+    ${CORE_SOURCE_DIR}/liblog/stderr_write.c
     ${CORE_SOURCE_DIR}/liblog/fake_log_device.c
     ${CORE_SOURCE_DIR}/liblog/fake_writer.c
-    ${CORE_SOURCE_DIR}/liblog/event_tag_map.c
+    ${CORE_SOURCE_DIR}/liblog/event_tag_map.cpp
 )
 
 set(APPEND2SIMG_SRCS ${CORE_SOURCE_DIR}/libsparse/append2simg.c)
@@ -103,25 +124,30 @@ set(UNPACKBOOTIMG_SRCS ${CORE_SOURCE_DIR}/mkbootimg/unpackbootimg)
 # Build libraries
 # ============================================================
 
+# libbase
+add_library(libbase STATIC ${LIBBASE_SRCS})
+target_include_directories(libbase PRIVATE ${libbase_include})
+set_target_properties(libbase PROPERTIES OUTPUT_NAME base)
+
 # libsparse
 add_library(libsparse STATIC ${LIBSPARSE_SRCS})
-target_include_directories(libsparse PRIVATE ${libsparse_include})
+target_include_directories(libsparse PRIVATE ${libsparse_include} ${libbase_include})
 set_target_properties(libsparse PROPERTIES OUTPUT_NAME sparse)
 if(NOT EXISTS ${libz})
     message(WARNING "libz is missing.
     LIBZ_BINARY_DIR: ${LIBZ_BINARY_DIR} does not have libz.a")
 endif()
-target_link_libraries(libsparse ${libz})
+target_link_libraries(libsparse ${libz} libbase)
 
 # libcutils
 add_library(libcutils STATIC ${LIBCUTILS_SRCS})
-target_include_directories(libcutils PRIVATE ${core_include})
+target_include_directories(libcutils PRIVATE ${libcutils_include} ${core_include})
 target_compile_options(libcutils PRIVATE ${libcutils_options})
 set_target_properties(libcutils PROPERTIES OUTPUT_NAME cutils)
 
 # liblog
 add_library(liblog STATIC ${LIBLOG_SRCS})
-target_include_directories(liblog PRIVATE ${core_include})
+target_include_directories(liblog PRIVATE ${liblog_include} ${core_include})
 target_compile_definitions(liblog PRIVATE ${liblog_definitions})
 target_compile_options(liblog PRIVATE ${liblog_options})
 set_target_properties(liblog PROPERTIES OUTPUT_NAME log)
@@ -151,7 +177,7 @@ target_link_libraries(simg2simg libsparse)
 
 # mkbootfs
 add_executable(mkbootfs ${MKBOOTFS_SRCS})
-target_include_directories(mkbootfs PRIVATE ${core_include})
+target_include_directories(mkbootfs PRIVATE ${libcutils_include})
 # pthread linking required
 target_link_libraries(mkbootfs libcutils liblog pthread)
 

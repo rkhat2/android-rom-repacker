@@ -3,24 +3,24 @@
 # ============================================================
 
 # Android version
-set(ANDROID_VERSION 7)
+set(ANDROID_VERSION 8)
 
 # Default settings for AOSP and LINEAGE
 # AOSP branch
-set(DEFAULT_AOSP_BRANCH "android-7.1.2_r36")
+set(DEFAULT_AOSP_BRANCH "android-8.1.0_r14")
 
 # Lineage branch
 # Can't use latest lineage branches cause of issue.
 # Use hash commits instead
 # https://gitlab.kitware.com/cmake/cmake/issues/16528
-set(DEFAULT_LINEAGE_BRANCH "cm-14.1")
+set(DEFAULT_LINEAGE_BRANCH "lineage-15.1")
 
 # Android source
 set(ALLOWED_ANDROID_REPOSITORY_SOURCE AOSP LINEAGE)
 set(DEFAULT_ANDROID_REPOSITORY_SOURCE LINEAGE)
 
 # Android libraries
-set(ANDROID_SUBMODULES LIBZ PCRE LIBSELINUX CORE EXTRAS)
+set(ANDROID_SUBMODULES LIBZ PCRE SELINUX CORE EXTRAS)
 
 # Android libraries prefix directory
 set(ANDROID_PREFIX_DIR ${CMAKE_SOURCE_DIR}/external/platform)

@@ -1,12 +1,12 @@
 # Android-rom-repacker
 
-[![Travis CI Build Status](https://travis-ci.org/rkhat2/android-rom-repacker.svg?branch=android-7)](https://travis-ci.org/rkhat2/android-rom-repacker)
+[![Travis CI Build Status](https://travis-ci.org/rkhat2/android-rom-repacker.svg?branch=android-8)](https://travis-ci.org/rkhat2/android-rom-repacker)
 
 Android-rom-repacker is a kit to unpack/repack android ext4 and boot images
 
 ## Prebuilt binaries
 
-You can get prebuilt binaries from [here](https://www.github.com/rkhat2/android-rom-repacker/releases). Use tags that start with android-7
+You can get prebuilt binaries from [here](https://www.github.com/rkhat2/android-rom-repacker/releases). Use tags that start with android-8
 
 ## Prerequisite
 
@@ -23,13 +23,11 @@ apt-get install build-essential git zlib1g-dev libpcre3-dev
 #### Clang Compiler
 
 ```bash
-apt-get install clang
+apt-get install libc++-dev libc++abi-dev
 ```
 #### GCC Compiler
 
-```bash
-apt-get install gcc-multilib g++-multilib
-```
+Not supported
 
 ## How to build
 
@@ -49,13 +47,7 @@ make
 
 #### GCC Compiler
 
-```
-mkdir build && cd build
-
-cmake ..
-
-make
-```
+not supported
 
 ## Useful commands
 

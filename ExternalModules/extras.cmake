@@ -1,13 +1,13 @@
-#Custom CMake configuration for Android 7 (Nougat) Extras
+#Custom CMake configuration for Android 8 (Oreo) Extras
 cmake_minimum_required(VERSION 3.8)
-project("Extras" C)
+project("Extras" C CXX)
 
 # External libraries
 # ============================================================
 
 # libpcre needs to be linked after libselinux
-set(libselinux "${LIBSELINUX_BINARY_DIR}/libselinux.a")
-set(libpcre "${PCRE_BINARY_DIR}/libpcre.a")
+set(libselinux "${SELINUX_BINARY_DIR}/libselinux.a")
+set(libpcre "${PCRE_BINARY_DIR}/libpcre2-8.a")
 
 # libz needs to be linked after libsparse
 set(libsparse "${CORE_BINARY_DIR}/libsparse.a")
@@ -21,9 +21,14 @@ set(liblog "${CORE_BINARY_DIR}/liblog.a")
 # Compile Options
 # ============================================================
 
-set(libselinux_include ${LIBSELINUX_SOURCE_DIR}/include)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
+
+set(ext4_include ${EXTRAS_SOURCE_DIR}/ext4_utils/include)
+set(libselinux_include ${SELINUX_SOURCE_DIR}/libselinux/include)
 set(libsparse_include ${CORE_SOURCE_DIR}/libsparse/include)
-set(core_include ${CORE_SOURCE_DIR}/include)
+set(libcutils_include ${CORE_SOURCE_DIR}/libcutils/include)
+
+add_compile_options(-Werror)
 
 set(make_ext4fs_definitions -DANDROID -DHOST)
 set(make_ext4fs_options -fno-strict-aliasing)
@@ -55,7 +60,13 @@ set(MAKE_EXT4FS_SRCS
 # ============================================================
 
 add_executable(make_ext4fs ${MAKE_EXT4FS_SRCS} ${LIBEXT4_SRCS})
-target_include_directories(make_ext4fs PRIVATE ${libselinux_include} ${libsparse_include} ${core_include})
+target_include_directories(make_ext4fs PRIVATE
+    ${ext4_include}
+    ${libselinux_include}
+    ${libsparse_include}
+    ${libcutils_include}
+    # ${core_include}
+)
 target_compile_definitions(make_ext4fs PRIVATE ${make_ext4fs_definitions})
 target_compile_options(make_ext4fs PRIVATE ${make_ext4fs_options})
 
@@ -65,7 +76,7 @@ if(NOT EXISTS ${libselinux})
 endif()
 if(NOT EXISTS ${libpcre})
     message(WARNING "libpcre is missing.
-    PCRE_BINARY_DIR: ${PCRE_BINARY_DIR} does not have libpcre2.a")
+    PCRE_BINARY_DIR: ${PCRE_BINARY_DIR} does not have libpcre2-8.a")
 endif()
 if(NOT EXISTS ${libsparse})
     message(WARNING "libsparse is missing.
