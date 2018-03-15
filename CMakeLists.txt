@@ -111,10 +111,6 @@ add_dependencies(libcutils CORE-configure)
 m_build_target(liblog liblog CORE)
 add_dependencies(liblog CORE-configure)
 
-# Build libmincrypt
-m_build_target(libmincrypt libmincrypt CORE)
-add_dependencies(libmincrypt CORE-configure)
-
 # Build append2simg
 m_build_target(append2simg append2simg CORE)
 add_dependencies(append2simg libsparse CORE-configure)
@@ -137,7 +133,7 @@ add_dependencies(mkbootfs libcutils liblog CORE-configure)
 
 # mkbootimg
 m_build_target(mkbootimg mkbootimg CORE)
-add_dependencies(mkbootimg libmincrypt CORE-configure)
+add_dependencies(mkbootimg CORE-configure)
 
 # unpackbootimg
 m_build_target(unpackbootimg unpackbootimg CORE)

@@ -1,4 +1,4 @@
-# Custom CMake configuration for Android 6 (Marshmallow) Extras
+#Custom CMake configuration for Android 7 (Nougat) Extras
 cmake_minimum_required(VERSION 3.8)
 project("Extras" C)
 
@@ -26,8 +26,7 @@ set(libsparse_include ${CORE_SOURCE_DIR}/libsparse/include)
 set(core_include ${CORE_SOURCE_DIR}/include)
 
 set(make_ext4fs_definitions -DANDROID -DHOST)
-
-add_compile_options(-Werror)
+set(make_ext4fs_options -fno-strict-aliasing)
 
 # Sources
 # ============================================================
@@ -50,7 +49,6 @@ set(LIBEXT4_SRCS
 # make_ext4fs sources
 set(MAKE_EXT4FS_SRCS
     ${EXTRAS_SOURCE_DIR}/ext4_utils/make_ext4fs_main.c
-    ${EXTRAS_SOURCE_DIR}/ext4_utils/canned_fs_config.c
 )
 
 # Build executables
@@ -59,6 +57,7 @@ set(MAKE_EXT4FS_SRCS
 add_executable(make_ext4fs ${MAKE_EXT4FS_SRCS} ${LIBEXT4_SRCS})
 target_include_directories(make_ext4fs PRIVATE ${libselinux_include} ${libsparse_include} ${core_include})
 target_compile_definitions(make_ext4fs PRIVATE ${make_ext4fs_definitions})
+target_compile_options(make_ext4fs PRIVATE ${make_ext4fs_options})
 
 if(NOT EXISTS ${libselinux})
     message(WARNING "libselinux is missing.
@@ -84,7 +83,6 @@ if(NOT EXISTS ${liblog})
     message(WARNING "liblog is missing.
     LIBLOG_BINARY_DIR: ${LIBLOG_BINARY_DIR} does not have liblog.a")
 endif()
-
 target_link_libraries(make_ext4fs
     ${libselinux}
     ${libpcre}
@@ -93,3 +91,5 @@ target_link_libraries(make_ext4fs
     ${libcutils}
     ${liblog}
 )
+
+target_link_libraries(make_ext4fs pthread)

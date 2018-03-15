@@ -1,4 +1,4 @@
-# Custom CMake configuration for Android 6 (Marshmallow) Libselinux
+#Custom CMake configuration for Android 7 (Nougat) Libselinux
 cmake_minimum_required(VERSION 3.8)
 project("Libselinux" C)
 
@@ -50,6 +50,7 @@ set(LIBSELINUX_HOSTS
     ${LIBSELINUX_SOURCE_DIR}/src/label.c
     ${LIBSELINUX_SOURCE_DIR}/src/label_file.c
     ${LIBSELINUX_SOURCE_DIR}/src/label_android_property.c
+    ${LIBSELINUX_SOURCE_DIR}/src/label_support.c
 )
 
 # Build libraries

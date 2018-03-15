@@ -1,12 +1,12 @@
 # Android-rom-repacker
 
-[![Travis CI Build Status](https://travis-ci.org/rkhat2/android-rom-repacker.svg?branch=android-6)](https://travis-ci.org/rkhat2/android-rom-repacker)
+[![Travis CI Build Status](https://travis-ci.org/rkhat2/android-rom-repacker.svg?branch=android-7)](https://travis-ci.org/rkhat2/android-rom-repacker)
 
 Android-rom-repacker is a kit to unpack/repack android ext4 and boot images
 
 ## Prebuilt binaries
 
-You can get prebuilt binaries from [here](https://www.github.com/rkhat2/android-rom-repacker/releases). Use tags that start with android-6
+You can get prebuilt binaries from [here](https://www.github.com/rkhat2/android-rom-repacker/releases). Use tags that start with android-7
 
 ## Prerequisite
 
