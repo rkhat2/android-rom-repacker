@@ -1,0 +1,20 @@
+language: cpp
+matrix:
+- os: linux
+      env: NAME="linux build"
+      sudo: required
+      dist: trusty
+      services: docker
+      install: "./.travis/linux/deps.sh"
+      script: "./.travis/linux/build.sh"
+      after_success: "./.travis/linux/upload.sh"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "key"
+  file_glob: true
+  file: "artifacts/*"
+  skip_cleanup: true
+  on:
+    tags: true

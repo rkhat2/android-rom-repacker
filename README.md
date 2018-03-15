@@ -1,5 +1,71 @@
 # Android-rom-repacker
 
+[![Travis CI Build Status](https://travis-ci.org/rkhat2/android-rom-repacker.svg?branch=android-6)](https://travis-ci.org/rkhat2/android-rom-repacker)
+
 Android-rom-repacker is a kit to unpack/repack android ext4 and boot images
 
-Check a branch to build from source or get prebuilt binaries from [here](https://www.github.com/rkhat2/android-rom-repacker/releases)
+## Prebuilt binaries
+
+You can get prebuilt binaries from [here](https://www.github.com/rkhat2/android-rom-repacker/releases). Use tags that start with android-6
+
+## Prerequisite
+
+* CMake version 3.8 or higher
+
+* Git
+
+* The following packages
+
+```bash
+apt-get install build-essential git zlib1g-dev libpcre3-dev
+```
+
+#### Clang Compiler
+
+```bash
+apt-get install clang
+```
+#### GCC Compiler
+
+```bash
+apt-get install gcc-multilib g++-multilib
+```
+
+## How to build
+
+#### Clang Compiler
+
+```bash
+export CC=/usr/bin/clang
+
+export CXX=/usr/bing/clang++
+
+mkdir build && cd build
+
+cmake ..
+
+make
+```
+
+#### GCC Compiler
+
+```
+mkdir build && cd build
+
+cmake ..
+
+make
+```
+
+## Useful commands
+
+```bash
+# download, update and patch external dependencies without building
+make external 
+
+# default clean command doesn't clean external depdendencies' build. Use this instead.
+make all-clean
+
+# delete everything
+
+```
