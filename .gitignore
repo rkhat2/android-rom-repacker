@@ -1,0 +1,14 @@
+# Build directory
+[Bb]uild/
+doc-build/
+
+# IDE files
+*.swp
+.vscode/
+.vs/
+
+# Bin directory
+bin/
+
+# External directory
+external/
