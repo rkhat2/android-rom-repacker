@@ -1,18 +1,19 @@
 language: cpp
 matrix:
-- os: linux
-      env: NAME="linux build"
-      sudo: required
-      dist: trusty
-      services: docker
-      install: "./.travis/linux/deps.sh"
-      script: "./.travis/linux/build.sh"
-      after_success: "./.travis/linux/upload.sh"
+  include:
+  - os: linux
+    env: NAME="linux build"
+    sudo: required
+    dist: trusty
+    services: docker
+    install: "./.travis/linux/deps.sh"
+    script: "./.travis/linux/build.sh"
+    after_success: "./.travis/linux/upload.sh"
 
 deploy:
   provider: releases
   api_key:
-    secure: "key"
+    secure: mxN5+yfraAEy90qxA2/8pWAy8vz9wJM++biDbblf7u87p7oztpRRugwgMFDML9gsvO3xTuWLCOdef780oL4xXlZZtrNIowU+PUSTpiX11ZzEMsE8eqqhWIcu2G1I/aAVyLG38YHl4At1pG34ZoldmqSKKWBbWWfcygeO07Mym8KFNzZk4F2uk+IknSAipwEFPeGVOUozIYpfwsyLNXy2znFz5461+57ofFy7vzImZhsHpON2FhrNMx6E7pmuGF1926574sWuMcsisqoTKEz2poPyUsRgc5nxERCjtmA4dWQvlm/SfyiCZubL5TI5mg6FZfevyqlRVgqmy2RyfGdi/wLbiYrjvAB1Nj3PB7CZ3SiqoC5x8x/LHr1SWZlkYA3H8CXFZ5rds8hPMckfCgN8K0UgOom5h/LIbkT8suZ/bXGwXJWqQMO6w0YvyuQnZbb/e+/0pgv6xHExhlOkcAcKqUW97NOnGED8aEhvy+l0xMKMt8Y+kGk5TMAnYcthNrEV9daExWNd+uV3PLIay7kicDEgq6+Pngo1r/E4dm+PNboIhy2ZeUy5vSd+jM0PneXKvbFXrfehe8SEpIvriBjGoG50nzFIST5QZkvutQGeGIdPCJ7UiDeDuyAjWUwYawVllY8A1O8Cy6h3DHoKS99wKy2+8hbxwjGmOYMIqfbaKAQ=
   file_glob: true
   file: "artifacts/*"
   skip_cleanup: true
