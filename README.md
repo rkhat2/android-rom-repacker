@@ -47,7 +47,7 @@ make
 
 #### GCC Compiler
 
-not supported
+Not supported
 
 ## Useful commands
 
