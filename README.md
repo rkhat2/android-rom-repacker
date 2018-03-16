@@ -25,11 +25,10 @@ apt-get install build-essential git zlib1g-dev libpcre3-dev
 ```bash
 apt-get install clang
 ```
+
 #### GCC Compiler
 
-```bash
-apt-get install gcc-multilib g++-multilib
-```
+Not supported
 
 ## How to build
 
@@ -49,13 +48,7 @@ make
 
 #### GCC Compiler
 
-```
-mkdir build && cd build
-
-cmake ..
-
-make
-```
+Not supported
 
 ## Useful commands
 
@@ -65,7 +58,4 @@ make external
 
 # default clean command doesn't clean external depdendencies' build. Use this instead.
 make all-clean
-
-# delete everything
-
 ```

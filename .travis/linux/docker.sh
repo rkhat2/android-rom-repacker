@@ -7,8 +7,6 @@ apt-get install -y wget
 apt-get install -y build-essential git zlib1g-dev libpcre3-dev
 #clang
 apt-get install -y clang
-#gcc
-# apt-get install -y gcc-multilib g++-multilib
 
 # Get a recent version of CMake
 wget https://cmake.org/files/v3.10/cmake-3.10.2-Linux-x86_64.sh
