@@ -8,6 +8,6 @@ COMPRESSION_FLAGS="-czvf"
 
 mkdir "$REV_NAME"
 
-cp -a bin "$REV_NAME"
+cp -a bin/. "$REV_NAME"
 
 . .travis/common/post-upload.sh

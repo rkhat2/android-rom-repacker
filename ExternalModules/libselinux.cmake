@@ -5,10 +5,11 @@ project("Libselinux" C)
 # Compile Options
 # ============================================================
 
-set(libselinux_include ${LIBSELINUX_SOURCE_DIR}/include)
-set(libselinux_definitions -DHOST -DAUDITD_LOG_TAG=1003 -D_GNU_SOURCE)
-
 add_compile_options(-Werror)
+
+set(libselinux_include ${LIBSELINUX_SOURCE_DIR}/include)
+
+set(libselinux_definitions -DHOST -DAUDITD_LOG_TAG=1003 -D_GNU_SOURCE)
 
 # Sources
 # ============================================================

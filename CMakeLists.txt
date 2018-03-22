@@ -9,8 +9,7 @@ include(Current)
 # CMAKE Configuration
 # ============================================================
 
-set(CMAKE_BUILD_TYPE Debug Release CACHE STRING "" FORCE)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 # Android Modules
 # ============================================================
@@ -23,6 +22,12 @@ set(COMMON_CMAKE_ARGS
     -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:PATH=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     -DANDROID_VERSION:STRING=${ANDROID_VERSION}
 )
+
+if(CMAKE_BUILD_TYPE)
+    list(APPEND COMMON_CMAKE_ARGS
+        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+    )
+endif()
 
 # Append android modules's source directory and binary directory
 foreach(module ${ANDROID_SUBMODULES})
@@ -81,8 +86,6 @@ m_ExternalProject_Add(EXTRAS
 )
 ExternalProject_Add_StepDependencies(EXTRAS patch "${EXTERNAL_MODULES_DIR}/extras.cmake")
 ExternalProject_Add_StepDependencies(EXTRAS configure libz libpcre libselinux libsparse libcutils liblog)
-
-unset(EXTERNAL_MODULES_DIR)
 
 # Building binaries
 # ============================================================

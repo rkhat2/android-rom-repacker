@@ -21,11 +21,14 @@ set(liblog "${CORE_BINARY_DIR}/liblog.a")
 # Compile Options
 # ============================================================
 
+add_compile_options(-Werror)
+
 set(libselinux_include ${LIBSELINUX_SOURCE_DIR}/include)
 set(libsparse_include ${CORE_SOURCE_DIR}/libsparse/include)
 set(core_include ${CORE_SOURCE_DIR}/include)
 
 set(make_ext4fs_definitions -DANDROID -DHOST)
+
 set(make_ext4fs_options -fno-strict-aliasing)
 
 # Sources

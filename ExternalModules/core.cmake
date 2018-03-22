@@ -10,6 +10,8 @@ set(libz "${LIBZ_BINARY_DIR}/libz.a")
 # Compile options
 # ============================================================
 
+add_compile_options(-Werror)
+
 set(libsparse_include ${CORE_SOURCE_DIR}/libsparse/include)
 set(core_include ${CORE_SOURCE_DIR}/include)
 
@@ -18,8 +20,6 @@ set(liblog_definitions
     -DLIBLOG_LOG_TAG=1005
     -DSNET_EVENT_LOG_TAG=1397638484
 )
-
-add_compile_options(-Werror)
 
 set(libcutils_options -Wall -Wextra)
 set(liglog_options -fvisibility=hidden)
