@@ -23,14 +23,15 @@ set(liblog "${CORE_BINARY_DIR}/liblog.a")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
 
+add_compile_options(-Werror)
+
 set(ext4_include ${EXTRAS_SOURCE_DIR}/ext4_utils/include)
 set(libselinux_include ${SELINUX_SOURCE_DIR}/libselinux/include)
 set(libsparse_include ${CORE_SOURCE_DIR}/libsparse/include)
 set(libcutils_include ${CORE_SOURCE_DIR}/libcutils/include)
 
-add_compile_options(-Werror)
-
 set(make_ext4fs_definitions -DANDROID -DHOST)
+
 set(make_ext4fs_options -fno-strict-aliasing)
 
 # Sources

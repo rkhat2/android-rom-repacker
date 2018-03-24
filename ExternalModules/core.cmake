@@ -12,6 +12,8 @@ set(libz "${LIBZ_BINARY_DIR}/libz.a")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
 
+add_compile_options(-Werror)
+
 set(libbase_include ${CORE_SOURCE_DIR}/base/include)
 set(libsparse_include ${CORE_SOURCE_DIR}/libsparse/include)
 set(libcutils_include ${CORE_SOURCE_DIR}/libcutils/include)
@@ -23,8 +25,6 @@ set(liblog_definitions
     -DLIBLOG_LOG_TAG=1006
     -DSNET_EVENT_LOG_TAG=1397638484
 )
-
-add_compile_options(-Werror)
 
 set(libcutils_options -Wall -Wextra)
 set(liglog_options -fvisibility=hidden)

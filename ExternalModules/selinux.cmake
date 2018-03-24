@@ -10,6 +10,8 @@ project("Selinux" C CXX)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
 
+add_compile_options(-Werror)
+
 set(libselinux_include ${SELINUX_SOURCE_DIR}/libselinux/include)
 set(pcre_include ${PCRE_SOURCE_DIR}/include)
 
@@ -24,8 +26,6 @@ set(libselinux_definitions
     -DNO_X_BACKEND
     -DNO_DB_BACKEND
 )
-
-add_compile_options(-Werror)
 
 # Sources
 # ============================================================
