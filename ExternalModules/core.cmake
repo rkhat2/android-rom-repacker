@@ -10,6 +10,8 @@ set(libz "${LIBZ_BINARY_DIR}/libz.a")
 # Compile options
 # ============================================================
 
+add_compile_options(-Werror)
+
 set(libsparse_include ${CORE_SOURCE_DIR}/libsparse/include)
 set(core_include ${CORE_SOURCE_DIR}/include)
 
@@ -17,8 +19,6 @@ set(liblog_definitions
     -DFAKE_LOG_DEVICE=1
     -DLIBLOG_LOG_TAG=1005
 )
-
-add_compile_options(-Werror)
 
 set(libmincrypt_options -Wall)
 
