@@ -1,0 +1,14 @@
+BasedOnStyle: Google
+AccessModifierOffset: -2
+AllowShortFunctionsOnASingleLine: Inline
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterFunction: true
+ColumnLimit: 100
+CommentPragmas: NOLINT:.*
+DerivePointerAlignment: false
+IndentWidth: 4
+PointerAlignment: Right
+TabWidth: 4
+UseTab: Always
+PenaltyExcessCharacter: 32

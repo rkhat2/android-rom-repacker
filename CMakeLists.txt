@@ -56,12 +56,19 @@ m_ExternalProject_Add(PCRE
 m_ExternalProject_Add(LIBSELINUX
     PATCH_COMMAND ${CMAKE_COMMAND} -E echo "Adding custom cmake configuration"
     COMMAND ${CMAKE_COMMAND} -E copy ${EXTERNAL_MODULES_DIR}/libselinux.cmake ${LIBSELINUX_DIR}/CMakeLists.txt
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/sefcontext_decompile.c ${LIBSELINUX_DIR}/sefcontext_decompile.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/label_file2.h ${LIBSELINUX_DIR}/label_file2.h
     CMAKE_CACHE_ARGS ${COMMON_CMAKE_ARGS}
     BUILD_COMMAND ""
     SOURCE_SUBDIR ${RELATIVE_LIBSELINUX_SOURCE}
     STEP_TARGETS configure
 )
-ExternalProject_Add_StepDependencies(LIBSELINUX patch "${EXTERNAL_MODULES_DIR}/libselinux.cmake")
+ExternalProject_Add_StepDependencies(LIBSELINUX patch
+    "${EXTERNAL_MODULES_DIR}/libselinux.cmake"
+    "${CMAKE_SOURCE_DIR}/src/sefcontext_decompile.c"
+    "${CMAKE_SOURCE_DIR}/src/label_file2.h"
+)
+ExternalProject_Add_StepDependencies(LIBSELINUX configure libpcre)
 
 # CORE
 m_ExternalProject_Add(CORE
@@ -145,6 +152,14 @@ add_dependencies(unpackbootimg CORE-configure)
 # make_ext4fs
 m_build_target(make_ext4fs make_ext4fs EXTRAS)
 add_dependencies(make_ext4fs libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
+
+# sefcontext_compile
+m_build_target(sefcontext_compile sefcontext_compile LIBSELINUX)
+add_dependencies(sefcontext_compile libpcre libselinux LIBSELINUX-configure)
+
+# sefcontext_decompile
+m_build_target(sefcontext_decompile sefcontext_decompile LIBSELINUX)
+add_dependencies(sefcontext_decompile LIBSELINUX-configure)
 
 # Miscellaneous
 # ============================================================
