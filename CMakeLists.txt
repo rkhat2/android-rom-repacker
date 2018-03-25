@@ -56,13 +56,19 @@ m_ExternalProject_Add(PCRE
 m_ExternalProject_Add(SELINUX
     PATCH_COMMAND ${CMAKE_COMMAND} -E echo "Adding custom cmake configuration"
     COMMAND ${CMAKE_COMMAND} -E copy ${EXTERNAL_MODULES_DIR}/selinux.cmake ${SELINUX_DIR}/CMakeLists.txt
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/sefcontext_decompile.c ${SELINUX_DIR}/sefcontext_decompile.c
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/label_file2.h ${SELINUX_DIR}/label_file2.h
     CMAKE_CACHE_ARGS ${COMMON_CMAKE_ARGS}
     BUILD_COMMAND ""
     SOURCE_SUBDIR ${RELATIVE_SELINUX_SOURCE}
     STEP_TARGETS configure
 )
-ExternalProject_Add_StepDependencies(SELINUX patch "${EXTERNAL_MODULES_DIR}/selinux.cmake")
-ExternalProject_Add_StepDependencies(SELINUX configure PCRE-patch)
+ExternalProject_Add_StepDependencies(SELINUX patch
+    "${EXTERNAL_MODULES_DIR}/selinux.cmake"
+    "${CMAKE_SOURCE_DIR}/src/sefcontext_decompile.c"
+    "${CMAKE_SOURCE_DIR}/src/label_file2.h"
+)
+ExternalProject_Add_StepDependencies(SELINUX configure libpcre)
 
 # CORE
 m_ExternalProject_Add(CORE
@@ -102,6 +108,10 @@ add_dependencies(libpcre PCRE-configure)
 # Build libselinux
 m_build_target(libselinux libselinux SELINUX)
 add_dependencies(libselinux SELINUX-configure)
+
+# Build libsepol
+m_build_target(libsepol libsepol SELINUX)
+add_dependencies(libsepol SELINUX-configure)
 
 # Build libbase
 m_build_target(libbase libbase CORE)
@@ -150,6 +160,14 @@ add_dependencies(unpackbootimg CORE-configure)
 # make_ext4fs
 m_build_target(make_ext4fs make_ext4fs EXTRAS)
 add_dependencies(make_ext4fs libz libselinux libsparse libcutils liblog EXTRAS-configure)
+
+# Build sefcontext_compile
+m_build_target(sefcontext_compile sefcontext_compile SELINUX)
+add_dependencies(sefcontext_compile libpcre libselinux libsepol SELINUX-configure)
+
+# Build sefcontext_decompile
+m_build_target(sefcontext_decompile sefcontext_decompile SELINUX)
+add_dependencies(sefcontext_decompile SELINUX-configure)
 
 # Miscellaneous
 # ============================================================
