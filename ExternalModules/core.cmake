@@ -10,7 +10,13 @@ set(libz "${LIBZ_BINARY_DIR}/libz.a")
 # Compile options
 # ============================================================
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
+# Options for libc++ and c+11 static library
+set(cpp11_options -std=c++11 -stdlib=libc++ -fcoroutines-ts -static)
+string(REPLACE ";" " " cpp11_flags "${cpp11_options}")
+
+# Find libc++ and libc++abi static libraries
+find_library(libcxx libc++.a)
+find_library(libcxxabi libc++abi.a)
 
 add_compile_options(-Werror)
 
@@ -67,12 +73,15 @@ set(LIBBASE_SRCS
 )
 
 # libsparse sources
-set(LIBSPARSE_SRCS
+set(LIBSPARSE_SRCS_C
     ${CORE_SOURCE_DIR}/libsparse/backed_block.c
     ${CORE_SOURCE_DIR}/libsparse/output_file.c
     ${CORE_SOURCE_DIR}/libsparse/sparse.c
     ${CORE_SOURCE_DIR}/libsparse/sparse_crc32.c
-    ${CORE_SOURCE_DIR}/libsparse/sparse_err.c
+    ${CORE_SOURCE_DIR}/libsparse/sparse_err.c   
+)
+
+set(LIBSPARSE_SRCS_CPP
     ${CORE_SOURCE_DIR}/libsparse/sparse_read.cpp
 )
 
@@ -119,18 +128,19 @@ set(MKBOOTFS_SRCS ${CORE_SOURCE_DIR}/cpio/mkbootfs.c)
 set(MKBOOTIMG_SRCS ${CORE_SOURCE_DIR}/mkbootimg/mkbootimg)
 set(UNPACKBOOTIMG_SRCS ${CORE_SOURCE_DIR}/mkbootimg/unpackbootimg)
 
-
-
 # Build libraries
 # ============================================================
 
 # libbase
 add_library(libbase STATIC ${LIBBASE_SRCS})
+target_compile_options(libbase PRIVATE ${cpp11_options})
 target_include_directories(libbase PRIVATE ${libbase_include})
 set_target_properties(libbase PROPERTIES OUTPUT_NAME base)
+target_link_libraries(libbase pthread ${libcxx} ${libcxxabi})
 
 # libsparse
-add_library(libsparse STATIC ${LIBSPARSE_SRCS})
+add_library(libsparse STATIC ${LIBSPARSE_SRCS_C} ${LIBSPARSE_SRCS_CPP})
+set_source_files_properties(${LIBSPARSE_SRCS_CPP} PROPERTIES COMPILE_FLAGS ${cpp11_flags})
 target_include_directories(libsparse PRIVATE ${libsparse_include} ${libbase_include})
 set_target_properties(libsparse PROPERTIES OUTPUT_NAME sparse)
 if(NOT EXISTS ${libz})
@@ -138,6 +148,7 @@ if(NOT EXISTS ${libz})
     LIBZ_BINARY_DIR: ${LIBZ_BINARY_DIR} does not have libz.a")
 endif()
 target_link_libraries(libsparse ${libz} libbase)
+target_link_libraries(libsparse pthread ${libcxx} ${libcxxabi})
 
 # libcutils
 add_library(libcutils STATIC ${LIBCUTILS_SRCS})

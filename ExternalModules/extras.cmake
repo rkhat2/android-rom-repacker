@@ -21,8 +21,6 @@ set(liblog "${CORE_BINARY_DIR}/liblog.a")
 # Compile Options
 # ============================================================
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
-
 add_compile_options(-Werror)
 
 set(ext4_include ${EXTRAS_SOURCE_DIR}/ext4_utils/include)

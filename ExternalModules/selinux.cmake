@@ -10,8 +10,6 @@ set(libpcre "${PCRE_BINARY_DIR}/libpcre2-8.a")
 # Compile Options
 # ============================================================
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++11")
-
 add_compile_options(-Werror)
 
 set(libselinux_include ${SELINUX_SOURCE_DIR}/libselinux/include)
