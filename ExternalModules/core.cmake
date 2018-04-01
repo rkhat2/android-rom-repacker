@@ -18,6 +18,18 @@ string(REPLACE ";" " " cpp11_flags "${cpp11_options}")
 find_library(libcxx libc++.a)
 find_library(libcxxabi libc++abi.a)
 
+string(COMPARE EQUAL "${libcxx}" "libcxx-NOTFOUND" _cmp)
+if(_cmp)
+    message(SEND_ERROR "Library libc++.a not found. Install the library before continuing!")
+endif()
+
+string(COMPARE EQUAL "${libcxxabi}" "libcxxabi-NOTFOUND" _cmp)
+if(_cmp)
+    message(SEND_ERROR "Program libc++abi.a not found. Install the library before continuing!")
+endif()
+
+unset(_cmp)
+
 add_compile_options(-Werror)
 
 set(libbase_include ${CORE_SOURCE_DIR}/base/include)
