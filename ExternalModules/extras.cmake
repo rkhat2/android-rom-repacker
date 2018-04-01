@@ -32,9 +32,21 @@ set(make_ext4fs_definitions -DANDROID -DHOST)
 # Sources
 # ============================================================
 
+# original make_ext4fs.c
+set(MAKE_EXT4FS_ORIGINAL
+    ${EXTRAS_SOURCE_DIR}/ext4_utils/make_ext4fs.c
+)
+
+# modified make_ext4fs.c
+set(MAKE_EXT4FS_DEF
+    ${CMAKE_SOURCE_DIR}/make_ext4fs_def.c
+)
+set_property(DIRECTORY ${CMAKE_SOURCE_DIR}
+    PROPERTY INCLUDE_DIRECTORIES ${EXTRAS_SOURCE_DIR}/ext4_utils
+)
+
 # libext4 sources
 set(LIBEXT4_SRCS
-    ${EXTRAS_SOURCE_DIR}/ext4_utils/make_ext4fs.c
     ${EXTRAS_SOURCE_DIR}/ext4_utils/ext4fixup.c
     ${EXTRAS_SOURCE_DIR}/ext4_utils/ext4_utils.c
     ${EXTRAS_SOURCE_DIR}/ext4_utils/allocate.c
@@ -56,9 +68,13 @@ set(MAKE_EXT4FS_SRCS
 # Build executables
 # ============================================================
 
-add_executable(make_ext4fs ${MAKE_EXT4FS_SRCS} ${LIBEXT4_SRCS})
+add_executable(make_ext4fs ${MAKE_EXT4FS_SRCS} ${MAKE_EXT4FS_ORIGINAL} ${LIBEXT4_SRCS})
 target_include_directories(make_ext4fs PRIVATE ${libselinux_include} ${libsparse_include} ${core_include})
 target_compile_definitions(make_ext4fs PRIVATE ${make_ext4fs_definitions})
+
+add_executable(make_ext4fs_def ${MAKE_EXT4FS_SRCS} ${MAKE_EXT4FS_DEF} ${LIBEXT4_SRCS})
+target_include_directories(make_ext4fs_def PRIVATE ${libselinux_include} ${libsparse_include} ${core_include})
+target_compile_definitions(make_ext4fs_def PRIVATE ${make_ext4fs_definitions})
 
 if(NOT EXISTS ${libselinux})
     message(WARNING "libselinux is missing.
@@ -86,6 +102,15 @@ if(NOT EXISTS ${liblog})
 endif()
 
 target_link_libraries(make_ext4fs
+    ${libselinux}
+    ${libpcre}
+    ${libsparse}
+    ${libz}
+    ${libcutils}
+    ${liblog}
+)
+
+target_link_libraries(make_ext4fs_def
     ${libselinux}
     ${libpcre}
     ${libsparse}
