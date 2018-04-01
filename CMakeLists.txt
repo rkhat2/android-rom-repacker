@@ -6,6 +6,21 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 include(Default)
 include(Current)
 
+
+# Functions
+# ============================================================
+
+# Edit text
+find_program(SED sed)
+
+string(COMPARE EQUAL "${SED}" "SED-NOTFOUND" _cmp)
+if(_cmp)
+    message(SEND_ERROR "Program sed not found. Install before continuing!")
+endif()
+unset(_cmp)
+
+set(EDIT_TEXT ${SED} -i)
+
 # CMAKE Configuration
 # ============================================================
 
@@ -86,6 +101,9 @@ ExternalProject_Add_StepDependencies(CORE configure libz)
 m_ExternalProject_Add(EXTRAS
     PATCH_COMMAND ${CMAKE_COMMAND} -E echo "Adding custom cmake configuration"
     COMMAND ${CMAKE_COMMAND} -E copy ${EXTERNAL_MODULES_DIR}/extras.cmake ${EXTRAS_DIR}/CMakeLists.txt
+    COMMAND ${CMAKE_COMMAND} -E echo "Modifying make_ext4fs.c"
+    COMMAND ${CMAKE_COMMAND} -E copy ${EXTRAS_SOURCE_DIR}/ext4_utils/make_ext4fs.c ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:MAKE_EXT4FS_CMD=\"make_ext4fs:MAKE_EXT4FS_CMD=\"./make_ext4fs:" ${EXTRAS_DIR}/make_ext4fs_def.c
     CMAKE_CACHE_ARGS ${COMMON_CMAKE_ARGS}
     BUILD_COMMAND ""
     SOURCE_SUBDIR ${RELATIVE_EXTRAS_SOURCE}
@@ -159,13 +177,17 @@ add_dependencies(unpackbootimg CORE-configure)
 
 # make_ext4fs
 m_build_target(make_ext4fs make_ext4fs EXTRAS)
-add_dependencies(make_ext4fs libz libselinux libsparse libcutils liblog EXTRAS-configure)
+add_dependencies(make_ext4fs libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
 
-# Build sefcontext_compile
+# make_ext4fs_def
+m_build_target(make_ext4fs_def make_ext4fs_def EXTRAS)
+add_dependencies(make_ext4fs_def libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
+
+# sefcontext_compile
 m_build_target(sefcontext_compile sefcontext_compile SELINUX)
 add_dependencies(sefcontext_compile libpcre libselinux libsepol SELINUX-configure)
 
-# Build sefcontext_decompile
+# sefcontext_decompile
 m_build_target(sefcontext_decompile sefcontext_decompile SELINUX)
 add_dependencies(sefcontext_decompile SELINUX-configure)
 
