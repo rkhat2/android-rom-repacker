@@ -2,8 +2,8 @@
 
 . .travis/common/pre-upload.sh
 
-REV_NAME="android-rom-repacker-${GITDATE}-${GITREV}"
-ARCHIVE_NAME="${REV_NAME}.tar.gz"
+REV_NAME="android-rom-repacker-6"
+ARCHIVE_NAME="${REV_NAME}-${GITDATE}-${GITREV}.tar.gz"
 COMPRESSION_FLAGS="-czvf"
 
 mkdir "$REV_NAME"
