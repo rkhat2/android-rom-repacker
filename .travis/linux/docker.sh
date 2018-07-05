@@ -4,7 +4,7 @@
 apt-get update
 apt-get install -y wget
 #required
-apt-get install -y build-essential git zlib1g-dev libpcre3-dev
+apt-get install -y build-essential git zlib1g-dev libpcre3-dev liblz4-dev
 #gcc
 apt-get install -y gcc-multilib g++-multilib
 

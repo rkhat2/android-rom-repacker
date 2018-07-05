@@ -35,23 +35,6 @@ set(LIBSPARSE_SRCS
     ${CORE_SOURCE_DIR}/libsparse/sparse_read.c
 )
 
-# libcutil sources
-set(LIBCUTILS_SRCS
-    ${CORE_SOURCE_DIR}/libcutils/hashmap.c
-    ${CORE_SOURCE_DIR}/libcutils/native_handle.c
-    ${CORE_SOURCE_DIR}/libcutils/config_utils.c
-    ${CORE_SOURCE_DIR}/libcutils/load_file.c
-    ${CORE_SOURCE_DIR}/libcutils/strlcpy.c
-    ${CORE_SOURCE_DIR}/libcutils/open_memstream.c
-    ${CORE_SOURCE_DIR}/libcutils/record_stream.c
-    ${CORE_SOURCE_DIR}/libcutils/process_name.c
-    ${CORE_SOURCE_DIR}/libcutils/threads.c
-    ${CORE_SOURCE_DIR}/libcutils/sched_policy.c
-    ${CORE_SOURCE_DIR}/libcutils/iosched_policy.c
-    ${CORE_SOURCE_DIR}/libcutils/str_parms.c
-    ${CORE_SOURCE_DIR}/libcutils/fs_config.c
-)
-
 # liblog sources
 set(LIBLOG_SRCS
     ${CORE_SOURCE_DIR}/liblog/logd_write.c
@@ -92,11 +75,6 @@ if(NOT EXISTS ${libz})
 endif()
 target_link_libraries(libsparse ${libz})
 
-# libcutils
-add_library(libcutils STATIC ${LIBCUTILS_SRCS})
-target_include_directories(libcutils PRIVATE ${core_include})
-set_target_properties(libcutils PROPERTIES OUTPUT_NAME cutils)
-
 # liblog
 add_library(liblog STATIC ${LIBLOG_SRCS})
 target_include_directories(liblog PRIVATE ${core_include})
@@ -135,7 +113,7 @@ target_link_libraries(simg2simg libsparse)
 # mkbootfs
 add_executable(mkbootfs ${MKBOOTFS_SRCS})
 target_include_directories(mkbootfs PRIVATE ${core_include})
-target_link_libraries(mkbootfs libcutils liblog)
+target_link_libraries(mkbootfs liblog)
 
 # mkbootimg
 add_executable(mkbootimg ${MKBOOTIMG_SRCS})

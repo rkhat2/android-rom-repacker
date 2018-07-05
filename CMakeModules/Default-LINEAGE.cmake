@@ -1,4 +1,5 @@
 # Lineage url
+set(DEFAULT_LZ4_URL "https://github.com/LineageOS/android_external_lz4")
 set(DEFAULT_LIBZ_URL "https://github.com/LineageOS/android_external_zlib.git")
 # Lineage's PCRE not maintained. Using AOSP instead. 
 set(DEFAULT_PCRE_URL "https://android.googlesource.com/platform/external/pcre")
@@ -7,6 +8,7 @@ set(DEFAULT_CORE_URL "https://github.com/LineageOS/android_system_core.git")
 set(DEFAULT_EXTRAS_URL "https://github.com/LineageOS/android_system_extras.git")
 
 # Lineage branches
+set(DEFAULT_LZ4_BRANCH "ab3d3ccefdd6e96f1146307138f16c4e77f0b7b4")
 set(DEFAULT_LIBZ_BRANCH "e1bc5b1518b01893550e754de4366fdae1c6f89d")
 set(DEFAULT_PCRE_BRANCH ${DEFAULT_AOSP_BRANCH})
 set(DEFAULT_LIBSELINUX_BRANCH "2e2f4ae0697745285fff29b89c031df8f2733e4f")
@@ -16,6 +18,8 @@ set(DEFAULT_EXTRAS_BRANCH "cba516a826f4bcdf9ce4038c40e3a9cc1c906700")
 set(ANDROID_URL_HINT "Check https://github.com/LineageOS/android_system_core for more branches. 
     Use commit hashes. Otherwise changing branches will break")
 
+# android_external_lz4
+# ab3d3ccefdd6e96f1146307138f16c4e77f0b7b4        refs/heads/cm-12.1
 # android_external_zlib
 # e1bc5b1518b01893550e754de4366fdae1c6f89d        refs/heads/cm-12.1
 # 55411b151568e5e3ca27041a9e6bb65ba3469839        refs/heads/cm-13.0

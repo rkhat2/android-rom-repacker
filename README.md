@@ -17,7 +17,7 @@ You can get prebuilt binaries from [here](https://www.github.com/rkhat2/android-
 * The following packages
 
 ```bash
-apt-get install build-essential git zlib1g-dev libpcre3-dev
+apt-get install build-essential git zlib1g-dev libpcre3-dev liblz4-dev
 ```
 
 #### Clang Compiler

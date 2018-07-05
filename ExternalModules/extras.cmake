@@ -5,6 +5,8 @@ project("Extras" C)
 # External libraries
 # ============================================================
 
+set(liblz4 "${LZ4_BINARY_DIR}/liblz4.a")
+
 # libpcre needs to be linked after libselinux
 set(libselinux "${LIBSELINUX_BINARY_DIR}/libselinux.a")
 set(libpcre "${PCRE_BINARY_DIR}/libpcre.a")
@@ -13,8 +15,6 @@ set(libpcre "${PCRE_BINARY_DIR}/libpcre.a")
 set(libsparse "${CORE_BINARY_DIR}/libsparse.a")
 set(libz "${LIBZ_BINARY_DIR}/libz.a")
 
-# liblog needs to be linked after libcutils
-set(libcutils "${CORE_BINARY_DIR}/libcutils.a")
 set(liblog "${CORE_BINARY_DIR}/liblog.a")
 
 
@@ -77,6 +77,10 @@ add_executable(make_ext4fs_def ${MAKE_EXT4FS_SRCS} ${MAKE_EXT4FS_DEF} ${LIBEXT4_
 target_include_directories(make_ext4fs_def PRIVATE ${libselinux_include} ${libsparse_include} ${core_include})
 target_compile_definitions(make_ext4fs_def PRIVATE ${make_ext4fs_definitions})
 
+if(NOT EXISTS ${liblz4})
+    message(WARNING "Liblz4 is missing.
+    LZ4_BINARY_DIR: ${LZ4_BINARY_DIR} does not have liblz4.a")
+endif()
 if(NOT EXISTS ${libselinux})
     message(WARNING "libselinux is missing.
     LIBSELINUX_BINARY_DIR: ${LIBSELINUX_BINARY_DIR} does not have libselinux.a")
@@ -93,29 +97,25 @@ if(NOT EXISTS ${libz})
     message(WARNING "Libz is missing.
     LIBZ_BINARY_DIR: ${LIBZ_BINARY_DIR} does not have libz.a")
 endif()
-if(NOT EXISTS ${libcutils})
-    message(WARNING "libcutils is missing.
-    LIBCUTILS_BINARY_DIR: ${LIBCUTILS_BINARY_DIR} does not have libcutils.a")
-endif()
 if(NOT EXISTS ${liblog})
     message(WARNING "liblog is missing.
     LIBLOG_BINARY_DIR: ${LIBLOG_BINARY_DIR} does not have liblog.a")
 endif()
 
 target_link_libraries(make_ext4fs
+    ${liblz4}
     ${libselinux}
     ${libpcre}
     ${libsparse}
     ${libz}
-    ${libcutils}
     ${liblog}
 )
 
 target_link_libraries(make_ext4fs_def
+    ${liblz4}
     ${libselinux}
     ${libpcre}
     ${libsparse}
     ${libz}
-    ${libcutils}
     ${liblog}
 )

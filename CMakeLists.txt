@@ -52,6 +52,14 @@ foreach(module ${ANDROID_SUBMODULES})
     )
 endforeach()
 
+# LZ4
+m_ExternalProject_Add(LZ4
+    CONFIGURE_COMMAND ${CMAKE_COMMAND} ${LZ4_SOURCE_DIR}/cmake_unofficial
+    BUILD_COMMAND ""
+    SOURCE_SUBDIR src
+    STEP_TARGETS configure
+)
+
 # LIBZ
 m_ExternalProject_Add(LIBZ
     CONFIGURE_COMMAND ${CMAKE_COMMAND} ${LIBZ_SOURCE_DIR}/src
@@ -103,10 +111,14 @@ m_ExternalProject_Add(EXTRAS
     STEP_TARGETS configure
 )
 ExternalProject_Add_StepDependencies(EXTRAS patch "${EXTERNAL_MODULES_DIR}/extras.cmake")
-ExternalProject_Add_StepDependencies(EXTRAS configure libz libpcre libselinux libsparse libcutils liblog)
+ExternalProject_Add_StepDependencies(EXTRAS configure liblz4 libz libpcre libselinux libsparse liblog)
 
 # Building binaries
 # ============================================================
+
+# Build liblz4
+m_build_target(liblz4 liblz4 LZ4)
+add_dependencies(liblz4 LZ4-configure)
 
 # Build libz
 m_build_target(libz zlibstatic LIBZ)
@@ -123,10 +135,6 @@ add_dependencies(libselinux LIBSELINUX-configure)
 # Build libsparse
 m_build_target(libsparse libsparse CORE)
 add_dependencies(libsparse libz CORE-configure)
-
-# Build libcutils
-m_build_target(libcutils libcutils CORE)
-add_dependencies(libcutils CORE-configure)
 
 # Build liblog
 m_build_target(liblog liblog CORE)
@@ -154,7 +162,7 @@ add_dependencies(simg2simg libsparse CORE-configure)
 
 # mkbootfs
 m_build_target(mkbootfs mkbootfs CORE)
-add_dependencies(mkbootfs libcutils liblog CORE-configure)
+add_dependencies(mkbootfs liblog CORE-configure)
 
 # mkbootimg
 m_build_target(mkbootimg mkbootimg CORE)
@@ -166,11 +174,11 @@ add_dependencies(unpackbootimg CORE-configure)
 
 # make_ext4fs
 m_build_target(make_ext4fs make_ext4fs EXTRAS)
-add_dependencies(make_ext4fs libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
+add_dependencies(make_ext4fs liblz4 libz libpcre libselinux libsparse liblog EXTRAS-configure)
 
 # make_ext4fs_def
 m_build_target(make_ext4fs_def make_ext4fs_def EXTRAS)
-add_dependencies(make_ext4fs_def libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
+add_dependencies(make_ext4fs_def liblz4 libz libpcre libselinux libsparse liblog EXTRAS-configure)
 
 # Miscellaneous
 # ============================================================
