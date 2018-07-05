@@ -3,7 +3,7 @@
 # ============================================================
 
 # Android version
-set(ANDROID_VERSION 6)
+set(ANDROID_VERSION 5)
 
 # Default settings for AOSP and LINEAGE
 # AOSP branch
