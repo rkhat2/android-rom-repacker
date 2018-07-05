@@ -1,4 +1,4 @@
-# Custom CMake configuration for Android Wear 5 Core
+# Custom CMake configuration for Android 5 (Lollipop) Core
 cmake_minimum_required(VERSION 3.8)
 project("Core" C)
 

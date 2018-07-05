@@ -7,7 +7,7 @@ set(ANDROID_VERSION 6)
 
 # Default settings for AOSP and LINEAGE
 # AOSP branch
-set(DEFAULT_AOSP_BRANCH "android-wear-5.1.0_r1")
+set(DEFAULT_AOSP_BRANCH "android-5.1.1_r38")
 
 # Lineage branch
 # Can't use latest lineage branches cause of issue.
@@ -17,7 +17,7 @@ set(DEFAULT_LINEAGE_BRANCH "cm-12.1")
 
 # Android source
 set(ALLOWED_ANDROID_REPOSITORY_SOURCE AOSP LINEAGE)
-set(DEFAULT_ANDROID_REPOSITORY_SOURCE AOSP)
+set(DEFAULT_ANDROID_REPOSITORY_SOURCE LINEAGE)
 
 # Android libraries
 set(ANDROID_SUBMODULES LIBZ PCRE LIBSELINUX CORE EXTRAS)

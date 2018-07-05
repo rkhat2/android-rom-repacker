@@ -1,4 +1,4 @@
-# Custom CMake configuration for Android Wear 5 Extras
+# Custom CMake configuration for Android 5 (Lollipop) Extras
 cmake_minimum_required(VERSION 3.8)
 project("Extras" C)
 

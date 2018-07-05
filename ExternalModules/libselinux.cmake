@@ -1,4 +1,4 @@
-# Custom CMake configuration for Android Wear 5 Libselinux
+# Custom CMake configuration for Android 5 (Lollipop) Libselinux
 cmake_minimum_required(VERSION 3.8)
 project("Libselinux" C)
 
