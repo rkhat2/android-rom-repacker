@@ -7,17 +7,17 @@ set(ANDROID_VERSION 6)
 
 # Default settings for AOSP and LINEAGE
 # AOSP branch
-set(DEFAULT_AOSP_BRANCH "android-6.0.1_r79")
+set(DEFAULT_AOSP_BRANCH "android-wear-5.1.0_r1")
 
 # Lineage branch
 # Can't use latest lineage branches cause of issue.
 # Use hash commits instead
 # https://gitlab.kitware.com/cmake/cmake/issues/16528
-set(DEFAULT_LINEAGE_BRANCH "cm-13.0")
+set(DEFAULT_LINEAGE_BRANCH "cm-12.1")
 
 # Android source
 set(ALLOWED_ANDROID_REPOSITORY_SOURCE AOSP LINEAGE)
-set(DEFAULT_ANDROID_REPOSITORY_SOURCE LINEAGE)
+set(DEFAULT_ANDROID_REPOSITORY_SOURCE AOSP)
 
 # Android libraries
 set(ANDROID_SUBMODULES LIBZ PCRE LIBSELINUX CORE EXTRAS)

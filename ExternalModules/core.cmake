@@ -1,4 +1,4 @@
-# Custom CMake configuration for Android 6 (Marshmallow) Core
+# Custom CMake configuration for Android Wear 5 Core
 cmake_minimum_required(VERSION 3.8)
 project("Core" C)
 
@@ -55,7 +55,6 @@ set(LIBCUTILS_SRCS
 # liblog sources
 set(LIBLOG_SRCS
     ${CORE_SOURCE_DIR}/liblog/logd_write.c
-    ${CORE_SOURCE_DIR}/liblog/log_event_write.c
     ${CORE_SOURCE_DIR}/liblog/uio.c
     ${CORE_SOURCE_DIR}/liblog/fake_log_device.c
 )

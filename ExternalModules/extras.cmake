@@ -1,4 +1,4 @@
-# Custom CMake configuration for Android 6 (Marshmallow) Extras
+# Custom CMake configuration for Android Wear 5 Extras
 cmake_minimum_required(VERSION 3.8)
 project("Extras" C)
 
@@ -53,6 +53,7 @@ set(LIBEXT4_SRCS
     ${EXTRAS_SOURCE_DIR}/ext4_utils/contents.c
     ${EXTRAS_SOURCE_DIR}/ext4_utils/extent.c
     ${EXTRAS_SOURCE_DIR}/ext4_utils/indirect.c
+    ${EXTRAS_SOURCE_DIR}/ext4_utils/uuid.c 
     ${EXTRAS_SOURCE_DIR}/ext4_utils/sha1.c
     ${EXTRAS_SOURCE_DIR}/ext4_utils/wipe.c
     ${EXTRAS_SOURCE_DIR}/ext4_utils/crc16.c
