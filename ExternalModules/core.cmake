@@ -1,4 +1,4 @@
-#Custom CMake configuration for Android 8 (Oreo) Core
+#Custom CMake configuration for Android 9 (Pie) Core
 cmake_minimum_required(VERSION 3.8)
 project("Core" C CXX)
 
@@ -10,9 +10,9 @@ set(libz "${LIBZ_BINARY_DIR}/libz.a")
 # Compile options
 # ============================================================
 
-# Options for libc++ and c+11 static library
-set(cpp11_options -std=c++11 -stdlib=libc++ -fcoroutines-ts -static)
-string(REPLACE ";" " " cpp11_flags "${cpp11_options}")
+# Options for libc++ and c++17 static library
+set(cpp17_options -std=c++17 -stdlib=libc++ -fcoroutines-ts -static)
+string(REPLACE ";" " " cpp17_flags "${cpp17_options}")
 
 # Find libc++ and libc++abi static libraries
 find_library(libcxx libc++.a)
@@ -99,28 +99,27 @@ set(LIBSPARSE_SRCS_CPP
 
 # libcutil sources
 set(LIBCUTILS_SRCS
-    ${CORE_SOURCE_DIR}/libcutils/config_utils.c
+    ${CORE_SOURCE_DIR}/libcutils/config_utils.cpp
     ${CORE_SOURCE_DIR}/libcutils/fs_config.cpp
-    ${CORE_SOURCE_DIR}/libcutils/canned_fs_config.c
-    ${CORE_SOURCE_DIR}/libcutils/hashmap.c
-    ${CORE_SOURCE_DIR}/libcutils/iosched_policy.c
-    ${CORE_SOURCE_DIR}/libcutils/load_file.c
-    ${CORE_SOURCE_DIR}/libcutils/native_handle.c
+    ${CORE_SOURCE_DIR}/libcutils/canned_fs_config.cpp
+    ${CORE_SOURCE_DIR}/libcutils/hashmap.cpp
+    ${CORE_SOURCE_DIR}/libcutils/iosched_policy.cpp
+    ${CORE_SOURCE_DIR}/libcutils/load_file.cpp
+    ${CORE_SOURCE_DIR}/libcutils/native_handle.cpp
     ${CORE_SOURCE_DIR}/libcutils/open_memstream.c
-    ${CORE_SOURCE_DIR}/libcutils/record_stream.c
+    ${CORE_SOURCE_DIR}/libcutils/record_stream.cpp
     ${CORE_SOURCE_DIR}/libcutils/sched_policy.cpp
     ${CORE_SOURCE_DIR}/libcutils/strlcpy.c
-    ${CORE_SOURCE_DIR}/libcutils/threads.c
+    ${CORE_SOURCE_DIR}/libcutils/threads.cpp
 )
 
 # liblog sources
-set(LIBLOG_SRCS
+set(LIBLOG_SRCS_C
     ${CORE_SOURCE_DIR}/liblog/config_read.c
     ${CORE_SOURCE_DIR}/liblog/config_write.c
     ${CORE_SOURCE_DIR}/liblog/local_logger.c
     ${CORE_SOURCE_DIR}/liblog/log_event_list.c
     ${CORE_SOURCE_DIR}/liblog/log_event_write.c
-    ${CORE_SOURCE_DIR}/liblog/log_ratelimit.cpp
     ${CORE_SOURCE_DIR}/liblog/logger_lock.c
     ${CORE_SOURCE_DIR}/liblog/logger_name.c
     ${CORE_SOURCE_DIR}/liblog/logger_read.c
@@ -129,6 +128,10 @@ set(LIBLOG_SRCS
     ${CORE_SOURCE_DIR}/liblog/stderr_write.c
     ${CORE_SOURCE_DIR}/liblog/fake_log_device.c
     ${CORE_SOURCE_DIR}/liblog/fake_writer.c
+)
+
+set(LIBLOG_SRC_CPP
+    ${CORE_SOURCE_DIR}/liblog/log_ratelimit.cpp
     ${CORE_SOURCE_DIR}/liblog/event_tag_map.cpp
 )
 
@@ -138,21 +141,21 @@ set(SIMG2IMG_SRCS ${CORE_SOURCE_DIR}/libsparse/simg2img.c)
 set(SIMG2SIMG_SRCS ${CORE_SOURCE_DIR}/libsparse/simg2simg.c)
 set(MKBOOTFS_SRCS ${CORE_SOURCE_DIR}/cpio/mkbootfs.c)
 set(MKBOOTIMG_SRCS ${CORE_SOURCE_DIR}/mkbootimg/mkbootimg)
-set(UNPACKBOOTIMG_SRCS ${CORE_SOURCE_DIR}/mkbootimg/unpackbootimg)
+set(UNPACKBOOTIMG_SRCS ${CORE_SOURCE_DIR}/mkbootimg/unpack_bootimg)
 
 # Build libraries
 # ============================================================
 
 # libbase
 add_library(libbase STATIC ${LIBBASE_SRCS})
-target_compile_options(libbase PRIVATE ${cpp11_options})
+target_compile_options(libbase PRIVATE ${cpp17_options})
 target_include_directories(libbase PRIVATE ${libbase_include})
 set_target_properties(libbase PROPERTIES OUTPUT_NAME base)
 target_link_libraries(libbase pthread ${libcxx} ${libcxxabi})
 
 # libsparse
 add_library(libsparse STATIC ${LIBSPARSE_SRCS_C} ${LIBSPARSE_SRCS_CPP})
-set_source_files_properties(${LIBSPARSE_SRCS_CPP} PROPERTIES COMPILE_FLAGS ${cpp11_flags})
+set_source_files_properties(${LIBSPARSE_SRCS_CPP} PROPERTIES COMPILE_FLAGS ${cpp17_flags})
 target_include_directories(libsparse PRIVATE ${libsparse_include} ${libbase_include})
 set_target_properties(libsparse PROPERTIES OUTPUT_NAME sparse)
 if(NOT EXISTS ${libz})
@@ -169,7 +172,8 @@ target_compile_options(libcutils PRIVATE ${libcutils_options})
 set_target_properties(libcutils PROPERTIES OUTPUT_NAME cutils)
 
 # liblog
-add_library(liblog STATIC ${LIBLOG_SRCS})
+add_library(liblog STATIC ${LIBLOG_SRCS_C} ${LIBLOG_SRCS_CPP})
+set_source_files_properties(${LIBLOG_SRCS_CPP} PROPERTIES COMPILE_FLAGS ${cpp17_flags})
 target_include_directories(liblog PRIVATE ${liblog_include} ${core_include})
 target_compile_definitions(liblog PRIVATE ${liblog_definitions})
 target_compile_options(liblog PRIVATE ${liblog_options})

@@ -2,7 +2,7 @@
 
 . .travis/common/pre-upload.sh
 
-REV_NAME="android-rom-repacker-8"
+REV_NAME="android-rom-repacker-9"
 ARCHIVE_NAME="${REV_NAME}-${GITDATE}-${GITREV}.tar.gz"
 COMPRESSION_FLAGS="-czvf"
 

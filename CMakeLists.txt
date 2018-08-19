@@ -98,19 +98,19 @@ ExternalProject_Add_StepDependencies(CORE patch "${EXTERNAL_MODULES_DIR}/core.cm
 ExternalProject_Add_StepDependencies(CORE configure libz)
 
 # EXTRAS
-m_ExternalProject_Add(EXTRAS
-    PATCH_COMMAND ${CMAKE_COMMAND} -E echo "Adding custom cmake configuration"
-    COMMAND ${CMAKE_COMMAND} -E copy ${EXTERNAL_MODULES_DIR}/extras.cmake ${EXTRAS_DIR}/CMakeLists.txt
-    COMMAND ${CMAKE_COMMAND} -E echo "Modifying make_ext4fs.c"
-    COMMAND ${CMAKE_COMMAND} -E copy ${EXTRAS_SOURCE_DIR}/ext4_utils/make_ext4fs.c ${EXTRAS_DIR}/make_ext4fs_def.c
-    COMMAND ${EDIT_TEXT} "/^/s:MAKE_EXT4FS_CMD=\"make_ext4fs:MAKE_EXT4FS_CMD=\"./make_ext4fs:" ${EXTRAS_DIR}/make_ext4fs_def.c
-    CMAKE_CACHE_ARGS ${COMMON_CMAKE_ARGS}
-    BUILD_COMMAND ""
-    SOURCE_SUBDIR ${RELATIVE_EXTRAS_SOURCE}
-    STEP_TARGETS configure
-)
-ExternalProject_Add_StepDependencies(EXTRAS patch "${EXTERNAL_MODULES_DIR}/extras.cmake")
-ExternalProject_Add_StepDependencies(EXTRAS configure libz libselinux libsparse libcutils liblog)
+# m_ExternalProject_Add(EXTRAS
+#     PATCH_COMMAND ${CMAKE_COMMAND} -E echo "Adding custom cmake configuration"
+#     COMMAND ${CMAKE_COMMAND} -E copy ${EXTERNAL_MODULES_DIR}/extras.cmake ${EXTRAS_DIR}/CMakeLists.txt
+#     COMMAND ${CMAKE_COMMAND} -E echo "Modifying make_ext4fs.c"
+#     COMMAND ${CMAKE_COMMAND} -E copy ${EXTRAS_SOURCE_DIR}/ext4_utils/make_ext4fs.c ${EXTRAS_DIR}/make_ext4fs_def.c
+#     COMMAND ${EDIT_TEXT} "/^/s:MAKE_EXT4FS_CMD=\"make_ext4fs:MAKE_EXT4FS_CMD=\"./make_ext4fs:" ${EXTRAS_DIR}/make_ext4fs_def.c
+#     CMAKE_CACHE_ARGS ${COMMON_CMAKE_ARGS}
+#     BUILD_COMMAND ""
+#     SOURCE_SUBDIR ${RELATIVE_EXTRAS_SOURCE}
+#     STEP_TARGETS configure
+# )
+# ExternalProject_Add_StepDependencies(EXTRAS patch "${EXTERNAL_MODULES_DIR}/extras.cmake")
+# ExternalProject_Add_StepDependencies(EXTRAS configure libz libselinux libsparse libcutils liblog)
 
 # Building binaries
 # ============================================================
@@ -175,13 +175,13 @@ add_dependencies(mkbootimg CORE-configure)
 m_build_target(unpackbootimg unpackbootimg CORE)
 add_dependencies(unpackbootimg CORE-configure)
 
-# make_ext4fs
-m_build_target(make_ext4fs make_ext4fs EXTRAS)
-add_dependencies(make_ext4fs libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
+# # make_ext4fs
+# m_build_target(make_ext4fs make_ext4fs EXTRAS)
+# add_dependencies(make_ext4fs libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
 
-# make_ext4fs_def
-m_build_target(make_ext4fs_def make_ext4fs_def EXTRAS)
-add_dependencies(make_ext4fs_def libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
+# # make_ext4fs_def
+# m_build_target(make_ext4fs_def make_ext4fs_def EXTRAS)
+# add_dependencies(make_ext4fs_def libz libpcre libselinux libsparse libcutils liblog EXTRAS-configure)
 
 # sefcontext_compile
 m_build_target(sefcontext_compile sefcontext_compile SELINUX)
