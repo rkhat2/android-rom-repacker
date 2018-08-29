@@ -1,5 +1,5 @@
 #Custom CMake configuration for Android 9 (Pie) Extras
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 project("Extras" C CXX)
 
 # External libraries
