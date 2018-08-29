@@ -23,7 +23,7 @@ apt-get install build-essential git zlib1g-dev libpcre3-dev
 #### Clang Compiler
 
 ```bash
-apt-get install libc++-dev libc++abi-dev
+apt-get install clang libc++-dev libc++abi-dev
 ```
 #### GCC Compiler
 
