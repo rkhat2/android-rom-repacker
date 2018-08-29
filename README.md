@@ -10,7 +10,7 @@ You can get prebuilt binaries from [here](https://www.github.com/rkhat2/android-
 
 ## Prerequisite
 
-* CMake version 3.8 or higher
+* CMake version 3.10 or higher
 
 * Git
 

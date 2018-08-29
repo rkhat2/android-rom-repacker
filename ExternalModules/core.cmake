@@ -1,5 +1,5 @@
 #Custom CMake configuration for Android 7 (Nougat) Core
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 project("Core" C)
 
 # External libraries
