@@ -1,5 +1,5 @@
 # Custom CMake configuration for Android 6 (Marshmallow) Libselinux
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 project("Libselinux" C)
 
 # Compile Options
