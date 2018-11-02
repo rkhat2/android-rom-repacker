@@ -103,7 +103,11 @@ m_ExternalProject_Add(EXTRAS
     COMMAND ${CMAKE_COMMAND} -E copy ${EXTERNAL_MODULES_DIR}/extras.cmake ${EXTRAS_DIR}/CMakeLists.txt
     COMMAND ${CMAKE_COMMAND} -E echo "Modifying make_ext4fs.c"
     COMMAND ${CMAKE_COMMAND} -E copy ${EXTRAS_SOURCE_DIR}/ext4_utils/make_ext4fs.c ${EXTRAS_DIR}/make_ext4fs_def.c
-    COMMAND ${EDIT_TEXT} "/^/s:MAKE_EXT4FS_CMD=\"make_ext4fs:MAKE_EXT4FS_CMD=\"./make_ext4fs:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:fs_config_func(dentries://fs_config_func(dentries:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:mode;:stat.st_mode;:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:uid;:stat.st_uid;:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:gid;:stat.st_gid;:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:root_stat.st_mode;:root_mode;:" ${EXTRAS_DIR}/make_ext4fs_def.c
     CMAKE_CACHE_ARGS ${COMMON_CMAKE_ARGS}
     BUILD_COMMAND ""
     SOURCE_SUBDIR ${RELATIVE_EXTRAS_SOURCE}
