@@ -104,10 +104,10 @@ m_ExternalProject_Add(EXTRAS
     COMMAND ${CMAKE_COMMAND} -E echo "Modifying make_ext4fs.c"
     COMMAND ${CMAKE_COMMAND} -E copy ${EXTRAS_SOURCE_DIR}/ext4_utils/make_ext4fs.c ${EXTRAS_DIR}/make_ext4fs_def.c
     COMMAND ${EDIT_TEXT} "/^/s:fs_config_func(dentries://fs_config_func(dentries:" ${EXTRAS_DIR}/make_ext4fs_def.c
-    COMMAND ${EDIT_TEXT} "/^/s:mode;:stat.st_mode;:" ${EXTRAS_DIR}/make_ext4fs_def.c
-    COMMAND ${EDIT_TEXT} "/^/s:uid;:stat.st_uid;:" ${EXTRAS_DIR}/make_ext4fs_def.c
-    COMMAND ${EDIT_TEXT} "/^/s:gid;:stat.st_gid;:" ${EXTRAS_DIR}/make_ext4fs_def.c
-    COMMAND ${EDIT_TEXT} "/^/s:root_stat.st_mode;:root_mode;:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:mode$<SEMICOLON>:stat.st_mode$<SEMICOLON>:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:uid$<SEMICOLON>:stat.st_uid$<SEMICOLON>:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:gid$<SEMICOLON>:stat.st_gid$<SEMICOLON>:" ${EXTRAS_DIR}/make_ext4fs_def.c
+    COMMAND ${EDIT_TEXT} "/^/s:root_stat.st_mode$<SEMICOLON>:root_mode$<SEMICOLON>:" ${EXTRAS_DIR}/make_ext4fs_def.c
     CMAKE_CACHE_ARGS ${COMMON_CMAKE_ARGS}
     BUILD_COMMAND ""
     SOURCE_SUBDIR ${RELATIVE_EXTRAS_SOURCE}
